@@ -1,10 +1,21 @@
 import requests
+import json
+from rich import print
+
+# new_net_object = {
+#     "name": "GOOGLE-DNS",
+#     "description": "Google public DNS server",
+#     "subType": "HOST",
+#     "value": "8.8.8.8",
+#     "type": "networkobject"
+# }
 
 new_net_object = {
-    "name": "GOOGLE-DNS",
-    "description": "Google public DNS server",
-    "subType": "HOST",
-    "value": "8.8.8.8",
+    "name": "KarmaTest",
+    "description": "DEVCOR Training",
+    "subType": "NETWORK",
+    "value": "10.175.200.0/24",
+    "dnsResolution": "IPV4_ONLY",
     "type": "networkobject"
 }
 
@@ -94,21 +105,23 @@ def main():
     # read and print current network objects
     fdm_net_objs = fdm.do_api_call("GET", "object/networks")
     for net_obj in fdm_net_objs['items']:
+        # print(net_obj)
         print(f"Existing {net_obj['name']} object, ID:{net_obj['id']}")
 
     # Check if object with the same name already exists
     # if so, delete it first to avoid errors
-    # obj_id = find_object_by_name (new_net_object, fdm_net_objs['items'])
-    # if obj_id:
-    #     print(f"{new_net_object['name']} object already exists, deleting...")
-    #     fdm.do_api_call ("DELETE", f"object/networks/{obj_id}")
+    obj_id = find_object_by_name (new_net_object, fdm_net_objs['items'])
+    if obj_id:
+        print(f"{new_net_object['name']} object already exists, deleting...")
+        fdm.do_api_call ("DELETE", f"object/networks/{obj_id}")
 
-    # # Create a new network object
-    # new_object = fdm.do_api_call ("POST", "object/networks", new_net_object)
-    # print(f"Created {new_object['name']} object, ID:{new_object['id']}")
+    # Create a new network object
+    new_object = fdm.do_api_call ("POST", "object/networks", new_net_object)
+    print(f"Created {new_object['name']} object, ID:{new_object['id']}")
+    print(new_object)
 
-    # # Configuration changes need to be deployed to be activated
-    # # Note it will fail in the DevNet sandbox when it's Read-Only
+    # Configuration changes need to be deployed to be activated
+    # Note it will fail in the DevNet sandbox when it's Read-Only
     # fdm.deploy()
 
 if __name__ == "__main__":
