@@ -1,0 +1,3 @@
+curl -k https://10.175.200.190/restconf/ -u 'user:pass'
+curl -k https://10.175.200.190/restconf/data/netconf-state/capabilities -u 'user:pass'
+curl -k https://sandbox-iosxe-latest-1.cisco.com/restconf/ -u "developer:C1sco12345"
